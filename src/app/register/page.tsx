@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
+import Link from "next/link";
 
 const REGISTER_USER = gql`
   mutation userCreate($name: String!, $email: String!, $password: String!) {
@@ -124,6 +125,14 @@ export default function Register() {
         {successMessage && (
           <p className="mt-4 text-green-600 text-sm">{successMessage}</p>
         )}
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-600">
+            Já possui uma conta?{" "}
+            <Link href="/login" className="text-[#3E894F] hover:underline">
+              Login
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

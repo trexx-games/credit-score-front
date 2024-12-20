@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const LOGIN_USER = gql`
   mutation authenticate($email: String!, $password: String!) {
@@ -72,7 +73,7 @@ export default function Login() {
               value={formData.email}
               onChange={handleChange}
               required
-              className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-500"
+              className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-[#66E383] focus:border-[#66E383] sm:text-sm text-gray-500"
             />
           </div>
           <div>
@@ -89,7 +90,7 @@ export default function Login() {
               value={formData.password}
               onChange={handleChange}
               required
-              className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-gray-500"
+              className="mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-[#66E383] focus:border-[#66E383] sm:text-sm text-gray-500"
             />
           </div>
           <button
@@ -98,7 +99,7 @@ export default function Login() {
             className={`w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white text-sm font-medium ${
               loading
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                : "bg-[#3E894F] hover:bg-[#66E383] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#66E383]"
             }`}
           >
             {loading ? "Logging in..." : "Login"}
@@ -110,6 +111,14 @@ export default function Login() {
         {successMessage && (
           <p className="mt-4 text-green-600 text-sm">{successMessage}</p>
         )}
+        <div className="mt-6 text-center">
+          <p className="text-sm text-gray-600">
+            Não tem uma conta?{" "}
+            <Link href="/register" className="text-[#3E894F] hover:underline">
+              Cadastre-se
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

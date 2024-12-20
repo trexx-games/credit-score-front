@@ -6,6 +6,7 @@ import { gql, useQuery } from "@apollo/client";
 import { jwtDecode } from "jwt-decode";
 import { useWallet } from "@/context/WalletContext";
 import { creditAvailable, quantityAvailable } from "@/utils/creditAvailable";
+import { useRouter } from "next/navigation";
 
 type JwtPayload = {
   sub: string;
@@ -46,6 +47,7 @@ export default function Home() {
   const [slug, setSlug] = useState<string | null>(null);
   const [message, setMessage] = useState<string>("");
   const [messageQuantity, setMessageQuantity] = useState<string>("");
+  const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -56,6 +58,8 @@ export default function Home() {
       } catch (error) {
         console.error("Failed to decode token:", error);
       }
+    } else {
+      router.push("/login");
     }
   }, []);
 
@@ -131,7 +135,6 @@ export default function Home() {
             scoresData.scores
               .map((obj: { value: number }) => `${obj.value}`)
               .join(" | ")}
-          .
         </p>
         {message && (
           <p className="text-gray-700 mt-4 text-justify">
