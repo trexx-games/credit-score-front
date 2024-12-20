@@ -130,7 +130,9 @@ export default function Home() {
           )}
         </p>
         <p className="text-gray-700 mt-4">
-          {scoresData && "Seus scores passados foram "}
+          {scoresData &&
+            scoresData.scores.length > 0 &&
+            "Seus scores passados foram "}
           {scoresData &&
             scoresData.scores
               .map((obj: { value: number }) => `${obj.value}`)
