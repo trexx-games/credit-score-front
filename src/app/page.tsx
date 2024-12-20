@@ -59,25 +59,17 @@ export default function Home() {
     }
   }, []);
 
-  const { data, loading, error } = useQuery(GET_USER, {
+  const { data } = useQuery(GET_USER, {
     variables: { slug },
     skip: !slug,
   });
 
-  const {
-    data: scoresData,
-    loading: scoresLoading,
-    error: scoresError,
-  } = useQuery(GET_SCORES, {
+  const { data: scoresData } = useQuery(GET_SCORES, {
     variables: { slug },
     skip: !slug,
   });
 
-  const {
-    data: userEventData,
-    loading: userEventLoading,
-    error: userEventError,
-  } = useQuery(GET_USER_EVENT, {
+  const { data: userEventData } = useQuery(GET_USER_EVENT, {
     variables: { slug },
     skip: !slug,
   });
