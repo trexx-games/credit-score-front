@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import WalletConnector from "../components/WalletConnector";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { jwtDecode } from "jwt-decode";
 import { useWallet } from "@/context/WalletContext";
 import { creditAvailable, quantityAvailable } from "@/utils/creditAvailable";
@@ -42,12 +42,27 @@ const GET_USER_EVENT = gql`
   }
 `;
 
+const CREDIT_SCORE_CREATE = gql`
+  mutation {
+    creditScoreCreate
+  }
+`;
+
 export default function Home() {
   const { walletAddress } = useWallet();
   const [slug, setSlug] = useState<string | null>(null);
   const [message, setMessage] = useState<string>("");
   const [messageQuantity, setMessageQuantity] = useState<string>("");
   const router = useRouter();
+  const [creditScoreCreate] = useMutation(CREDIT_SCORE_CREATE, {
+    onCompleted: () => {
+      console.log("Mutation creditScoreCreate called successfully.");
+    },
+    onError: (err) => {
+      console.error("Error calling creditScoreCreate:", err);
+    },
+  });
+  const [isScoreCreated, setIsScoreCreated] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -79,7 +94,7 @@ export default function Home() {
   });
 
   useEffect(() => {
-    if (data && data.user) {
+    if (data && data.user.score) {
       const level = data.user.score.value;
       try {
         const message = creditAvailable(level);
@@ -88,7 +103,14 @@ export default function Home() {
         console.error("Nível de risco inválido:", error);
       }
     }
-  }, [data]);
+
+    if (!isScoreCreated && data?.user?.score === null) {
+      setIsScoreCreated(true);
+      creditScoreCreate();
+    } else {
+      console.log("User already has a score:");
+    }
+  }, [data, creditScoreCreate, isScoreCreated]);
 
   useEffect(() => {
     if (userEventData && userEventData.event) {
@@ -114,7 +136,7 @@ export default function Home() {
         <p className="text-gray-700 text-center">Seu Trexx Score</p>
         <div>
           <p className="text-gray-700 text-center text-5xl">
-            {data ? data.user.score.value : 0}
+            {data && data.user.score ? data.user.score.value : 0}
           </p>
         </div>
         <p className="text-gray-700 mt-4">No caso do usuário {walletAddress}</p>

@@ -116,7 +116,7 @@ export default function Register() {
                 : "bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
             }`}
           >
-            {loading ? "Registering..." : "Register"}
+            {loading ? "Registering..." : "Cadastrar"}
           </button>
         </form>
         {errorMessage && (
